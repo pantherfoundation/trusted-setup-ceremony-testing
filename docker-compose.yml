@@ -1,8 +1,0 @@
-version: '3'
-services:
-  ceremony:
-    image: pantherprotocol/trusted-setup-ceremony
-    volumes:
-      - .:/app
-    stdin_open: true
-    tty: true
