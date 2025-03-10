@@ -3,7 +3,7 @@ import { execSync } from "child_process";
 import * as readlineSync from "readline-sync";
 import * as path from "path";
 import * as crypto from "crypto";
-import { getContributionFolders, getZkeyFiles } from "./utils";
+import {contributionRootFolder, getContributionFolders, getZkeyFiles} from "./utils";
 
 interface ContributionConfig {
   contributionNumber: string;
@@ -76,7 +76,7 @@ function setupContribution(): ContributionConfig {
   const githubUsername = readlineSync.question("Enter your GitHub username: ");
   const folderName = `${contributionNumber}_${githubUsername}`;
 
-  fs.mkdirSync(folderName);
+  fs.mkdirSync(path.join(contributionRootFolder, folderName));
 
   return {
     contributionNumber,
@@ -89,8 +89,8 @@ function setupContribution(): ContributionConfig {
 function contributeToZkey(zkeyFile: string, lastFolder: string, config: ContributionConfig, baseEntropy: string): ZkeyContribution {
   console.log(`\nProcessing ${zkeyFile}...`);
 
-  const latestZkey = path.join(lastFolder, zkeyFile);
-  const newZkey = path.join(config.folderName, zkeyFile);
+  const latestZkey = path.join(contributionRootFolder, lastFolder, zkeyFile);
+  const newZkey = path.join(contributionRootFolder, config.folderName, zkeyFile);
 
   console.log(`Contributing to ${zkeyFile}...`);
   const contributionName = `Contribution #${config.contributionNumber} from ${config.githubUsername}`;
@@ -102,10 +102,10 @@ function contributeToZkey(zkeyFile: string, lastFolder: string, config: Contribu
   execSync(command, { stdio: "inherit" });
 
   const vkeyName = zkeyFile.replace(".zkey", "_verification_key.json");
-  const vkey = path.join(config.folderName, vkeyName);
+  const vkey = path.join(contributionRootFolder, config.folderName, vkeyName);
   execSync(`snarkjs zkey export verificationkey ${newZkey} ${vkey}`, { stdio: "inherit" });
 
-  const transcriptPath = path.join(config.folderName, `${zkeyFile}_transcript.txt`);
+  const transcriptPath = path.join(contributionRootFolder, config.folderName, `${zkeyFile}_transcript.txt`);
   fs.writeFileSync(transcriptPath, `Contribution to ${zkeyFile} by ${config.githubUsername}\nTimestamp: ${config.timestamp}\n`);
 
   console.log(`✅ Contribution to ${zkeyFile} complete!`);
@@ -120,12 +120,12 @@ function contributeToZkey(zkeyFile: string, lastFolder: string, config: Contribu
 
 function createMetadataFiles(config: ContributionConfig, contributions: ZkeyContribution[]): void {
   fs.writeFileSync(
-    path.join(config.folderName, "contribution.txt"),
+    path.join(contributionRootFolder, config.folderName, "contribution.txt"),
     `Contribution by ${config.githubUsername}\nTimestamp: ${config.timestamp}\n\nEntropy was generated using a secure method and has been deleted.`
   );
 
   console.log("\nGenerating attestation file...");
-  const attestationPath = path.join(config.folderName, "attestation.json");
+  const attestationPath = path.join(contributionRootFolder, config.folderName, "attestation.json");
 
   const attestationData = {
     contributor: config.githubUsername,

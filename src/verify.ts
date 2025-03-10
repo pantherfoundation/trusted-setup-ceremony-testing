@@ -1,7 +1,7 @@
 import { execSync } from "child_process";
 import * as path from "path";
 import * as fs from "fs-extra";
-import { getContributionFolders, getCircuitR1cs, getZkeyFiles } from "./utils";
+import { contributionRootFolder, getContributionFolders, getCircuitR1cs, getZkeyFiles } from "./utils";
 
 function verifyZkeyContribution(circuitR1cs: string, prevZkey: string, currentZkey: string, zkeyFile: string): boolean {
   try {
@@ -33,8 +33,8 @@ function verifyAllContributions(contributionFolders: string[], circuitR1cs: stri
     }
 
     for (const zkeyFile of zkeyFiles) {
-      const prevZkey = path.join(prevFolder, zkeyFile);
-      const currentZkey = path.join(currentFolder, zkeyFile);
+      const prevZkey = path.join(contributionRootFolder, prevFolder, zkeyFile);
+      const currentZkey = path.join(contributionRootFolder, currentFolder, zkeyFile);
 
       if (!fs.existsSync(currentZkey)) {
         console.error(`Corresponding zkey file ${zkeyFile} not found in ${currentFolder}`);

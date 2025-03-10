@@ -58,14 +58,14 @@ Choose **one** of the following methods to contribute:
 #### Option A: Using Pre-built Docker Image
 
 ```bash
-docker run --rm -it  -v $(pwd):/app -v trusted-setup-node-modules:/app/node_modules pantherprotocol/trusted-setup-ceremony:latest contribute
+docker run --rm -it -v $(pwd)/contibutions:/app/contibutions pantherprotocol/trusted-setup-ceremony:latest contribute
 ```
 
 #### Option B: Build Docker Image Yourself (Recommended)
 
 ```bash
 docker build -t trusted-setup-ceremony .
-docker run --rm -it -v $(pwd):/app -v trusted-setup-node-modules:/app/node_modules trusted-setup-ceremony contribute
+docker run --rm -it -v $(pwd)/contibutions:/app/contibutions trusted-setup-ceremony contribute
 ```
 
 #### Option C: Using Node.js Directly
@@ -89,14 +89,14 @@ After contributing, verify that your contribution was processed correctly:
 #### Option A: Using Pre-built Docker Image
 
 ```bash
-docker run --rm -it  -v $(pwd):/app -v trusted-setup-node-modules:/app/node_modules pantherprotocol/trusted-setup-ceremony:latest verify
+docker run --rm -it -v $(pwd)/contibutions:/app/contibutions pantherprotocol/trusted-setup-ceremony:latest verify
 ```
 
 #### Option B: Build Docker Image Yourself (Recommended)
 
 ```bash
 docker build -t trusted-setup-ceremony .
-docker run --rm -it -v $(pwd):/app -v trusted-setup-node-modules:/app/node_modules trusted-setup-ceremony verify
+docker run --rm -it -v $(pwd)/contibutions:/app/contibutions verify
 ```
 
 #### Option C: Using Node.js Directly
@@ -148,17 +148,17 @@ On Windows, use one of these command formats:
 
 **PowerShell:**
 ```powershell
-docker run --rm -it -v ${PWD}:/app pantherprotocol/trusted-setup-ceremony contribute
+docker run --rm -it -v ${PWD}/contibutions:/app/contibutions pantherprotocol/trusted-setup-ceremony contribute
 ```
 
 **Command Prompt:**
 ```cmd
-docker run --rm -it -v %cd%:/app pantherprotocol/trusted-setup-ceremony contribute
+docker run --rm -it -v %cd%/contibutions:/app/contibutions pantherprotocol/trusted-setup-ceremony contribute
 ```
 
 **If you encounter path issues**, use absolute paths:
 ```cmd
-docker run --rm -it -v C:\full\path\to\trusted-setup:/app pantherprotocol/trusted-setup-ceremony contribute
+docker run --rm -it -v C:\full\path\to\trusted-setup-contrubutions:/app/contibutions pantherprotocol/trusted-setup-ceremony contribute
 ```
 
 ## Technical Details
@@ -175,7 +175,7 @@ You can use a specific version by replacing `:latest` with a version tag like `:
 
 ### Understanding Docker Commands
 
-- `-v $(pwd):/app` mounts your current directory to the container
+- `-v $(pwd)/contributions:/app/contributions` mounts the `contributions` folder in your current directory to the container
 - `-it` enables interactive input required for the contribution
 - `--rm` removes the container after execution
 - The Docker image supports both AMD64 (x86_64) and ARM64 architectures
