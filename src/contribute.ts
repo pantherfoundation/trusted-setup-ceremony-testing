@@ -26,6 +26,28 @@ function generateSecureEntropy(): string {
   return crypto.randomBytes(128).toString("hex");
 }
 
+function generateSystemEntropy(): string {
+  try {
+    const systemEntropy = execSync("LC_ALL=C tr -dc 'A-F0-9' < /dev/urandom | head -c32", {
+      encoding: 'utf8'
+    });
+    console.log("System entropy added from /dev/urandom");
+    return systemEntropy;
+  } catch (error) {
+    // First fallback using hexdump if available
+    try {
+      const systemEntropy = execSync("head -c16 /dev/urandom | xxd -p | tr -d '\\n'", {
+        encoding: 'utf8'
+      });
+      console.log("System entropy added using /dev/urandom and xxd");
+      return systemEntropy;
+    } catch (innerError) {
+      console.log("Could not generate system entropy. Skipping.");
+      return "";
+    }
+  }
+}
+
 function collectAdditionalEntropy(): string {
   if (readlineSync.keyInYN("Would you like to add additional entropy by typing random keys?")) {
     const additionalEntropy = readlineSync.question("Please mash your keyboard randomly (hidden input): ", {
@@ -118,9 +140,10 @@ function performContributions(config: ContributionConfig, lastFolder: string): Z
 
   console.log(`Found ${zkeyFiles.length} zkey files to contribute to.`);
 
+  const systemEntropy = generateSystemEntropy();
   const additionalEntropy = collectAdditionalEntropy();
   const mainEntropy = generateSecureEntropy();
-  const baseEntropy = mainEntropy + additionalEntropy;
+  const baseEntropy = mainEntropy + additionalEntropy + systemEntropy;
   console.log("Secure entropy generated (not displayed for security)");
 
   return zkeyFiles.map((zkeyFile) => {
