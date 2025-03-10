@@ -58,14 +58,14 @@ Choose **one** of the following methods to contribute:
 #### Option A: Using Pre-built Docker Image
 
 ```bash
-docker run --rm -it -v $(pwd)/contibutions:/app/contibutions pantherprotocol/trusted-setup-ceremony:latest contribute
+docker run --rm -it -v $(pwd)/contributions:/app/contributions pantherprotocol/trusted-setup-ceremony:latest contribute
 ```
 
 #### Option B: Build Docker Image Yourself (Recommended)
 
 ```bash
 docker build -t trusted-setup-ceremony .
-docker run --rm -it -v $(pwd)/contibutions:/app/contibutions trusted-setup-ceremony contribute
+docker run --rm -it -v $(pwd)/contributions:/app/contributions trusted-setup-ceremony contribute
 ```
 
 #### Option C: Using Node.js Directly
@@ -89,14 +89,14 @@ After contributing, verify that your contribution was processed correctly:
 #### Option A: Using Pre-built Docker Image
 
 ```bash
-docker run --rm -it -v $(pwd)/contibutions:/app/contibutions pantherprotocol/trusted-setup-ceremony:latest verify
+docker run --rm -it -v $(pwd)/contributions:/app/contributions pantherprotocol/trusted-setup-ceremony:latest verify
 ```
 
 #### Option B: Build Docker Image Yourself (Recommended)
 
 ```bash
 docker build -t trusted-setup-ceremony .
-docker run --rm -it -v $(pwd)/contibutions:/app/contibutions verify
+docker run --rm -it -v $(pwd)/contributions:/app/contributions verify
 ```
 
 #### Option C: Using Node.js Directly
@@ -148,17 +148,17 @@ On Windows, use one of these command formats:
 
 **PowerShell:**
 ```powershell
-docker run --rm -it -v ${PWD}/contibutions:/app/contibutions pantherprotocol/trusted-setup-ceremony contribute
+docker run --rm -it -v ${PWD}/contributions:/app/contributions pantherprotocol/trusted-setup-ceremony contribute
 ```
 
 **Command Prompt:**
 ```cmd
-docker run --rm -it -v %cd%/contibutions:/app/contibutions pantherprotocol/trusted-setup-ceremony contribute
+docker run --rm -it -v %cd%/contributions:/app/contributions pantherprotocol/trusted-setup-ceremony contribute
 ```
 
 **If you encounter path issues**, use absolute paths:
 ```cmd
-docker run --rm -it -v C:\full\path\to\trusted-setup-contrubutions:/app/contibutions pantherprotocol/trusted-setup-ceremony contribute
+docker run --rm -it -v C:\full\path\to\trusted-setup-contrubutions:/app/contributions pantherprotocol/trusted-setup-ceremony contribute
 ```
 
 ## Technical Details
