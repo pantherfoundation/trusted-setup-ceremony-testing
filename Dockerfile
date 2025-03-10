@@ -1,5 +1,5 @@
-# Use Node.js LTS as base image
-FROM node:18
+# Use Node.js 23 slim as base image (recommended by Docker Scout)
+FROM node:23-slim
 
 # Set working directory in the container
 WORKDIR /app
@@ -18,8 +18,6 @@ COPY src/ ./src/
 RUN npm run build
 
 # Default command that will show usage information
-CMD echo "Usage: docker run --rm -v $(pwd):/app trusted-setup [contribute|verify]" && \
-    echo "  - contribute: Run the contribution process" && \
-    echo "  - verify: Run the verification process"
+CMD ["sh", "-c", "echo \"Usage: docker run --rm -v $(pwd):/app trusted-setup [contribute|verify]\" && echo \"  - contribute: Run the contribution process\" && echo \"  - verify: Run the verification process\""]
 
 ENTRYPOINT ["npm", "run"]

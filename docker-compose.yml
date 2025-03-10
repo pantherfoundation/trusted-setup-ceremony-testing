@@ -1,9 +1,8 @@
 version: '3'
 services:
-  trusted-setup:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    image: trusted-setup
+  ceremony:
+    image: pantherprotocol/trusted-setup-ceremony
     volumes:
       - .:/app
+    stdin_open: true
+    tty: true
