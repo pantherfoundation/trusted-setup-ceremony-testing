@@ -13,7 +13,7 @@ This repository manages a trusted setup ceremony for a zero-knowledge circuit. E
 
 1. Clone this repository:
    ```
-   git clone https://github.com/your-username/trusted-setup.git
+   git clone https://github.com/pantherprotocol/trusted-setup.git
    cd trusted-setup
    ```
 

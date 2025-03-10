@@ -61,9 +61,17 @@ function collectAdditionalEntropy(): string {
 
 function setupContribution(): ContributionConfig {
   const contributionFolders = getContributionFolders();
-  const lastFolder = contributionFolders[contributionFolders.length - 1];
-  const lastContribution = parseInt(lastFolder.substring(0, 4));
-  const contributionNumber = (lastContribution + 1).toString().padStart(4, "0");
+
+  let contributionNumber: string;
+
+  if (contributionFolders.length === 0) {
+    // First contribution case
+    throw new Error("Initial setup folder '0000_initial' not found. Please ensure it exists with the initial circuit files.");
+  } else {
+    const lastFolder = contributionFolders[contributionFolders.length - 1];
+    const lastContribution = parseInt(lastFolder.substring(0, 4));
+    contributionNumber = (lastContribution + 1).toString().padStart(4, "0");
+  }
 
   const githubUsername = readlineSync.question("Enter your GitHub username: ");
   const folderName = `${contributionNumber}_${githubUsername}`;
