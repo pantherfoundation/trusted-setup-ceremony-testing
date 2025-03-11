@@ -3,7 +3,7 @@ import { execSync } from "child_process";
 import * as readlineSync from "readline-sync";
 import * as path from "path";
 import * as crypto from "crypto";
-import { contributionRootFolder, getContributionFolders, getZkeyFiles, downloadLatestContribution, ensureInitialSetup, uploadToS3, crossCheckFilesWithS3 } from "./utils";
+import { contributionRootFolder, getContributionFolders, getZkeyFiles, downloadLatestContribution, ensureInitialSetup, uploadToS3, crossCheckFilesWithS3, checkRequiredEnvVars } from "./utils";
 
 interface ContributionConfig {
   contributionNumber: string;
@@ -209,6 +209,9 @@ function runContributionCeremony(): ContributionResult {
 
 function main(): void {
   try {
+    // Check for required environment variables
+    checkRequiredEnvVars();
+
     // Ensure we have the initial setup with required files
     ensureInitialSetup();
 

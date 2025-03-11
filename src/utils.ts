@@ -3,16 +3,45 @@ import * as path from "path";
 import { execSync } from "child_process";
 import dotenv from "dotenv";
 
-// Load environment variables from .env file
+// Load environment variables from .env file - this works in local dev but may not in Docker
 dotenv.config();
+
+// Function to check required environment variables
+export function checkRequiredEnvVars(): void {
+  const requiredVars = [
+    'AWS_ACCESS_KEY_ID',
+    'AWS_SECRET_ACCESS_KEY',
+    'AWS_DEFAULT_REGION',
+    'AWS_ENDPOINT_URL',
+    'S3BUCKET'
+  ];
+
+  const missingVars = requiredVars.filter(varName => !process.env[varName]);
+
+  if (missingVars.length > 0) {
+    console.error(`❌ Error: Missing required environment variables: ${missingVars.join(', ')}`);
+    console.error('Please make sure you have created a .env file with these variables or set them in your environment.');
+    console.error('In Docker, use: docker run --env-file .env ... or mount the .env file and set --volume flag.');
+
+    // If we're likely running in Docker, provide a more specific suggestion
+    if (fs.existsSync('/.dockerenv') || process.env.DOCKER_CONTAINER) {
+      console.error('\nDocker-specific suggestions:');
+      console.error('1. Make sure you are using --env-file .env in your docker run command');
+      console.error('2. Try using individual -e flags: -e AWS_ACCESS_KEY_ID -e AWS_SECRET_ACCESS_KEY ...');
+      console.error('3. Check that your .env file is in the current directory where you run docker command');
+    }
+
+    process.exit(1);
+  }
+}
 
 export const contributionRootFolder = "./contributions";
 
 // Get S3 configuration from environment variables
-const S3_BUCKET_PATH = process.env.S3BUCKET || "s3://pp-trusted-test";
+const S3_BUCKET_PATH = process.env.S3BUCKET!
 export const S3_BUCKET_NAME = S3_BUCKET_PATH.replace("s3://", "");
-export const AWS_REGION = process.env.AWS_DEFAULT_REGION || "us-east-2";
-export const AWS_ENDPOINT = process.env.AWS_ENDPOINT_URL || `https://s3.${AWS_REGION}.amazonaws.com`;
+export const AWS_REGION = process.env.AWS_DEFAULT_REGION!;
+export const AWS_ENDPOINT = process.env.AWS_ENDPOINT_URL!;
 
 // Use environment variables for AWS credentials
 const AWS_ENV_VARS = {

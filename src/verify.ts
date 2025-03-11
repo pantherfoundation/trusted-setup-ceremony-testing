@@ -1,7 +1,7 @@
 import { execSync } from "child_process";
 import * as path from "path";
 import * as fs from "fs-extra";
-import { contributionRootFolder, getContributionFolders, getZkeyFiles, downloadFromS3, ensureInitialSetup, ensurePtauFile } from "./utils";
+import { contributionRootFolder, getContributionFolders, getZkeyFiles, downloadFromS3, ensureInitialSetup, ensurePtauFile, checkRequiredEnvVars } from "./utils";
 
 interface VerificationResult {
   contributionFolder: string;
@@ -146,6 +146,9 @@ function printResultsTable(results: VerificationResult[]): void {
 
 function main(): void {
   try {
+    // Check for required environment variables
+    checkRequiredEnvVars();
+
     // Create the contributions directory if it doesn't exist
     fs.ensureDirSync(contributionRootFolder);
 
