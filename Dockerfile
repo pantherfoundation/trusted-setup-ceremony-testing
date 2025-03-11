@@ -13,7 +13,7 @@ RUN npm install
 # Copy only the TypeScript config and source files
 COPY tsconfig.json ./
 COPY src/ ./src/
-COPY .env* ./
+COPY .env.example ./
 
 # Build TypeScript code
 RUN npm run build
