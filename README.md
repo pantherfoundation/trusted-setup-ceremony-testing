@@ -84,7 +84,8 @@ Select **one** of the following contribution methods:
 #### Option A: Using Pre-built Docker Image
 
 ```bash
-docker run --user $(id -u):$(id -g) --rm -it -v $(pwd)/contributions:/app/contributions pantherprotocol/trusted-setup-ceremony:latest contribute
+docker run --user $(id -u):$(id -g) --rm -it -v --env-file .env
+ $(pwd)/contributions:/app/contributions pantherprotocol/trusted-setup-ceremony:latest contribute
 ```
 
 #### Option B: Build Docker Image Yourself (Recommended)
