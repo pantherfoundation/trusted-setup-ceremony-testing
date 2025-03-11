@@ -427,12 +427,15 @@ export function crossCheckFilesWithS3(folderName: string): boolean {
 // Function to ensure the PTAU file is available
 export function ensurePtauFile(): string {
   const ptauFileName = "powersOfTau28_hez_final_18.ptau";
-  const ptauLocalPath = path.join(process.cwd(), ptauFileName);
+  const ptauLocalPath = path.join(contributionRootFolder, ptauFileName);
 
   // Check if PTAU file exists locally
   if (!fs.existsSync(ptauLocalPath)) {
     console.log(`PTAU file not found locally. Downloading from S3...`);
     try {
+      // Ensure the directory exists
+      fs.ensureDirSync(contributionRootFolder);
+
       // Use runAwsCommand for consistency
       runAwsCommand(`aws s3 cp ${S3_BUCKET_PATH}/${ptauFileName} ${ptauLocalPath}`);
       console.log(`✅ PTAU file downloaded successfully!`);
