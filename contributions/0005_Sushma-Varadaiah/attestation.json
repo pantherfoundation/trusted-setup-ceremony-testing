@@ -1,0 +1,31 @@
+{
+  "contributor": "Sushma-Varadaiah",
+  "contributionNumber": "0005",
+  "timestamp": "2025-03-11T10:54:04.821Z",
+  "files": [
+    {
+      "filename": "prpConverter.zkey",
+      "hash": "428cbcc21189e3707d26fbaffefa4682a0d01f27735051900e2400b1bf2698b3"
+    },
+    {
+      "filename": "treeBatchUpdaterAndRootChecker.zkey",
+      "hash": "4cf576a7bd3a7320a92c770fb92f61b7e719389a7b1a49b8e3bdef87eedbd8d5"
+    },
+    {
+      "filename": "zAccountRegistration.zkey",
+      "hash": "3f66df235188e5f0824af740d52a2f0e720f03d4b48646cad7b5b1b7d6ab7340"
+    },
+    {
+      "filename": "zAccountRenewal.zkey",
+      "hash": "309ca8dc9ea1a3786195b73a86eceeb652c514d3abf542b29791347af1e21f4d"
+    },
+    {
+      "filename": "zSwap.zkey",
+      "hash": "0121aceb6265c3b91ed4aca91763a5381cba4eac9b885ba83b807a34b972dcdf"
+    },
+    {
+      "filename": "zTransaction.zkey",
+      "hash": "89f992dc6d40893a8e8fef666420dace646240ad6385da972c500f54537b5361"
+    }
+  ]
+}
