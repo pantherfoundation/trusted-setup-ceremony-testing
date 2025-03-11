@@ -217,14 +217,6 @@ export function ensureInitialSetup(): void {
   // Function to check if initial folder has required files
   function hasRequiredInitialFiles(): boolean {
     try {
-      // Check for r1cs files
-      const r1csFiles = fs.readdirSync(localPath).filter((file) => file.endsWith(".r1cs"));
-      if (r1csFiles.length === 0) {
-        console.warn(`Initial folder is missing required .r1cs files`);
-        return false;
-      }
-
-      // Check for zkey files
       const zkeyFiles = getZkeyFiles(initialFolder);
       if (zkeyFiles.length === 0) {
         console.warn(`Initial folder is missing required .zkey files`);
