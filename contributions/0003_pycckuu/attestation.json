@@ -1,0 +1,31 @@
+{
+  "contributor": "pycckuu",
+  "contributionNumber": "0003",
+  "timestamp": "2025-03-11T09:48:43.924Z",
+  "files": [
+    {
+      "filename": "prpConverter.zkey",
+      "hash": "65ba3c888d542ccdbdcd3c3bff12961caf1b7a5785ca0e2e13fb2cd488baabb6"
+    },
+    {
+      "filename": "treeBatchUpdaterAndRootChecker.zkey",
+      "hash": "a15dc702f3cff7c9f36bc2343ecc95698b3e8edddaaeefebd92a483851ab9adb"
+    },
+    {
+      "filename": "zAccountRegistration.zkey",
+      "hash": "7fa435c954e7ba889c4905ff60393cf37880182f61527d7708610c39ecc83087"
+    },
+    {
+      "filename": "zAccountRenewal.zkey",
+      "hash": "126e118d0ff43b149821825484cddc40e1775dda87125ce3d856b98316a877ac"
+    },
+    {
+      "filename": "zSwap.zkey",
+      "hash": "d6a48642d624c211fbccab1b5503d44fb89217e3bf16cb52d45944d9a61c0441"
+    },
+    {
+      "filename": "zTransaction.zkey",
+      "hash": "b0c79319777cafb18615275749eee25dc55a451afb340d03ad06d17d4e095644"
+    }
+  ]
+}
