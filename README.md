@@ -14,12 +14,28 @@ The ceremony is sequential - each participant builds upon the previous contribut
 
 ## Prerequisites
 
-Before participating, ensure you have:
+## Prerequisites
 
-- [Docker](https://docs.docker.com/get-docker/) - For running the contribution environment
-- [Git](https://git-scm.com/downloads) - For repository management
-- [AWS CLI](https://aws.amazon.com/cli/) - For interacting with S3 storage
-- Basic familiarity with command-line operations
+Contributors have multiple options to participate in the Ceremony, each with different prerequisites:
+
+- **Option A & B: Running Inside a Docker Container**  
+  In this approach, [Docker](https://docs.docker.com/get-docker/) must be installed. This eliminates the need for locally installing [Node.js](https://nodejs.org/en/download) and [AWS CLI](https://aws.amazon.com/cli/), as the Docker container is pre-configured with everything required for the ceremony.  
+  Running inside a container ensures the ceremony operates in an isolated environment, minimizing interference from the host system. It is the **recommended option** for most contributors.  
+  Participants can choose between using a **pre-built Docker image** (Option A) or building the Docker image locally (Option B).
+
+- **Option C: Running Without Docker (Directly on the Computer)**  
+  In this method, contributors run the ceremony scripts directly on their computer without requiring [Docker](https://docs.docker.com/get-docker/). However, in this case, both [Node.js](https://nodejs.org/en/download) and [AWS CLI](https://aws.amazon.com/cli/) must be installed locally. This setup is less isolated than running inside a Docker container but can be used if Docker is unavailable.
+
+### General Requirements:
+Regardless of the chosen option, ensure you have:
+- **Basic familiarity with command-line operations** to execute the required commands.
+- [Git](https://git-scm.com/downloads) - For cloning and managing the repository.
+
+### Dependencies Based on Your Chosen Option:
+| **Option**             | **Required Tools**                                                                                  |
+|------------------------|-----------------------------------------------------------------------------------------------------|
+| **A & B (Docker)**     | [Docker](https://docs.docker.com/get-docker/), [Git](https://git-scm.com/downloads)                 |
+| **C (Without Docker)** | [Node.js](https://nodejs.org/en/download), [AWS CLI](https://aws.amazon.com/cli/), [Git](https://git-scm.com/downloads) |
 
 ### Setting Up S3 Access
 
