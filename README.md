@@ -18,18 +18,26 @@ Before participating, ensure you have:
 
 - [Docker](https://docs.docker.com/get-docker/) - For running the contribution environment
 - [Git](https://git-scm.com/downloads) - For repository management
-- [Git LFS](https://git-lfs.github.com/) - For handling large files
+- [AWS CLI](https://aws.amazon.com/cli/) - For interacting with S3 storage
 - Basic familiarity with command-line operations
 
-### Setting Up Git LFS
+### Setting Up S3 Access
 
-1. Install Git LFS from [git-lfs.github.com](https://git-lfs.github.com/)
-2. Configure Git LFS for your account:
+
+1. Copy the `.env.example` file to `.env`:
    ```bash
-   git lfs install
+   cp .env.example .env
    ```
 
-> **Important:** This repository uses Git LFS to manage large files generated during the ceremony. Without Git LFS properly configured, you won't be able to clone or contribute to the repository correctly.
+2. Edit the `.env` file and fill in your AWS credentials:
+   ```
+   AWS_ACCESS_KEY_ID=your_access_key_here
+   AWS_SECRET_ACCESS_KEY=your_secret_key_here
+   AWS_DEFAULT_REGION="us-east-2"
+   AWS_ENDPOINT_URL="https://s3.us-east-2.amazonaws.com"
+   S3BUCKET="s3://pp-trusted-test"
+   ```
+
 
 ## Security Best Practices
 
@@ -53,7 +61,18 @@ While following these recommendations provides maximum security, any contributio
    cd trusted-setup-ceremony
    ```
 
-### 2. Contribute to the Ceremony
+### 2. Set Up Environment Variables (Optional)
+
+You can customize the S3 bucket used for file storage by setting environment variables:
+
+```bash
+export S3_BUCKET_NAME=your-custom-bucket-name
+export S3_REGION=your-aws-region
+```
+
+By default, the ceremony uses the bucket `trusted-setup-files` in the `us-east-1` region.
+
+### 3. Contribute to the Ceremony
 
 Select **one** of the following contribution methods:
 
@@ -77,14 +96,15 @@ npm install
 npm run contribute
 ```
 
-### 3. Interactive Contribution Process
+### 4. Interactive Contribution Process
 
 During your contribution, you will:
 - Provide your GitHub username for attribution
 - Generate entropy by typing randomly on your keyboard
 - Wait for the process to complete, which creates a new folder containing your contribution and attestation
+- Your contribution will automatically be uploaded to the S3 bucket
 
-### 4. Verify Your Contribution
+### 5. Verify Your Contribution
 
 > **Note:** This verification functionality is currently under development.
 
@@ -93,14 +113,14 @@ After contributing, verify that your contribution was processed correctly:
 #### Option A: Using Pre-built Docker Image
 
 ```bash
-docker run --rm -it -v $(pwd)/contributions:/app/contributions pantherprotocol/trusted-setup-ceremony:latest verify
+docker run --user $(id -u):$(id -g) --rm -it -v $(pwd)/contributions:/app/contributions pantherprotocol/trusted-setup-ceremony:latest verify
 ```
 
 #### Option B: Build Docker Image Yourself (Recommended)
 
 ```bash
 docker build -t trusted-setup-ceremony .
-docker run --rm -it -v $(pwd)/contributions:/app/contributions verify
+docker run --user $(id -u):$(id -g) --rm -it -v $(pwd)/contributions:/app/contributions verify
 ```
 
 #### Option C: Using Node.js Directly
@@ -110,17 +130,31 @@ npm install
 npm run verify
 ```
 
-### 5. Submit Your Contribution
+### 6. Submit Your Contribution
 
-Commit and push your changes to your forked repository:
+After your contribution is complete, follow these steps to submit it:
 
 ```bash
+# Add all changes to git
 git add .
-git commit -m "Add contribution from YOUR_GITHUB_USERNAME"
+
+# Commit your changes with a descriptive message
+git commit -m "feat: add contribution"
+
+# Push to your fork
 git push origin main
 ```
 
-Then create a pull request to merge your contribution into the main repository.
+Then create a pull request:
+
+1. Go to the main repository on GitHub
+2. Click on "Pull requests" tab
+3. Click the "New pull request" button
+4. Select your fork and branch
+5. Add a title and description explaining your contribution
+6. Click "Create pull request"
+
+The maintainers will review your contribution and merge it into the main branch after verification.
 
 ## Troubleshooting
 
@@ -152,17 +186,17 @@ For Windows users, adjust commands as follows:
 
 **PowerShell:**
 ```powershell
-docker run --rm -it -v ${PWD}/contributions:/app/contributions pantherprotocol/trusted-setup-ceremony contribute
+docker run--user $(id -u):$(id -g) --rm -it -v ${PWD}/contributions:/app/contributions pantherprotocol/trusted-setup-ceremony contribute
 ```
 
 **Command Prompt:**
 ```cmd
-docker run --rm -it -v %cd%/contributions:/app/contributions pantherprotocol/trusted-setup-ceremony contribute
+docker run --user $(id -u):$(id -g) --rm -it -v %cd%/contributions:/app/contributions pantherprotocol/trusted-setup-ceremony contribute
 ```
 
 **For path-related issues**, use absolute paths:
 ```cmd
-docker run --rm -it -v C:\full\path\to\trusted-setup-contributions:/app/contributions pantherprotocol/trusted-setup-ceremony contribute
+docker run--user $(id -u):$(id -g) --rm -it -v C:\full\path\to\trusted-setup-contributions:/app/contributions pantherprotocol/trusted-setup-ceremony contribute
 ```
 
 ## Technical Details
@@ -174,7 +208,6 @@ The official ceremony Docker image is available on Docker Hub:
 ```bash
 docker pull pantherprotocol/trusted-setup-ceremony:latest
 ```
-
 You can specify a version by replacing `:latest` with a version tag (e.g., `:0.1`).
 
 ### Docker Command Parameters Explained
@@ -190,5 +223,6 @@ If you are coordinating the ceremony:
 
 1. Initialize the repository by copying the r1cs and zkey files to the `contributions/0000_initial` folder
 2. Push this initial setup to the repository
+
 
 

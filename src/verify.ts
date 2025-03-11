@@ -1,7 +1,14 @@
 import { execSync } from "child_process";
 import * as path from "path";
 import * as fs from "fs-extra";
-import { contributionRootFolder, getContributionFolders, getCircuitR1cs, getZkeyFiles } from "./utils";
+import {
+  contributionRootFolder,
+  getContributionFolders,
+  getCircuitR1cs,
+  getZkeyFiles,
+  downloadFromS3,
+  ensureInitialSetup
+} from "./utils";
 
 function verifyZkeyContribution(circuitR1cs: string, prevZkey: string, currentZkey: string, zkeyFile: string): boolean {
   try {
@@ -49,6 +56,31 @@ function verifyAllContributions(contributionFolders: string[], circuitR1cs: stri
 
 function main(): void {
   try {
+    // Create the contributions directory if it doesn't exist
+    fs.ensureDirSync(contributionRootFolder);
+
+    // Ensure we have the initial setup
+    ensureInitialSetup();
+
+    // Check if we need to download more contributions
+    const localContributionFolders = getContributionFolders();
+
+    if (localContributionFolders.length > 0) {
+      console.log(`Found ${localContributionFolders.length} local contribution folders.`);
+
+      // If we only have the initial setup locally, download all contributions from S3
+      if (localContributionFolders.length === 1) {
+        console.log("Only initial setup found locally. Downloading all contributions from S3...");
+        downloadFromS3();
+      } else {
+        console.log("Using already downloaded contributions. If you want to download the latest, delete the contributions folder and run again.");
+      }
+    } else {
+      console.log("No contributions found locally. Downloading all contributions from S3...");
+      downloadFromS3();
+    }
+
+    // Refresh the list of contribution folders after potential downloads
     const contributionFolders = getContributionFolders();
     console.log(`Found ${contributionFolders.length} contributions`);
 

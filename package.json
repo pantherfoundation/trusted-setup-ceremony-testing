@@ -8,9 +8,13 @@
     "verify": "ts-node src/verify.ts"
   },
   "dependencies": {
-    "snarkjs": "^0.7.0",
+    "@aws-sdk/client-s3": "^3.758.0",
+    "@aws-sdk/s3-request-presigner": "^3.758.0",
+    "aws-sdk": "^2.1692.0",
+    "dotenv": "^16.4.7",
     "fs-extra": "^11.1.1",
-    "readline-sync": "^1.4.10"
+    "readline-sync": "^1.4.10",
+    "snarkjs": "^0.7.0"
   },
   "devDependencies": {
     "@types/fs-extra": "^11.0.1",
