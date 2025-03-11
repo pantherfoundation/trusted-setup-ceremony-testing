@@ -3,7 +3,7 @@ import { execSync } from "child_process";
 import * as readlineSync from "readline-sync";
 import * as path from "path";
 import * as crypto from "crypto";
-import { contributionRootFolder, getContributionFolders, getZkeyFiles, downloadLatestContribution, ensureInitialSetup, uploadToS3 } from "./utils";
+import { contributionRootFolder, getContributionFolders, getZkeyFiles, downloadLatestContribution, ensureInitialSetup, uploadToS3, crossCheckFilesWithS3 } from "./utils";
 
 interface ContributionConfig {
   contributionNumber: string;
@@ -209,10 +209,14 @@ function runContributionCeremony(): ContributionResult {
 
 function main(): void {
   try {
-    // Ensure we have the initial setup
+    // Ensure we have the initial setup with required files
     ensureInitialSetup();
-    // Download the latest contribution from S3
-    downloadLatestContribution();
+
+    // Download the latest contribution from S3 and ensure it has required files
+    const latestFolder = downloadLatestContribution();
+
+    // These cross-checks are now handled directly in the functions above
+    // so we don't need to call them explicitly here
 
     const result = runContributionCeremony();
 
@@ -221,6 +225,10 @@ function main(): void {
     // Upload the new contribution to S3
     console.log(`\nUploading your contribution to S3...`);
     uploadToS3(result.config.folderName);
+
+    // Cross-check the uploaded contribution with S3
+    console.log(`\nVerifying uploaded contribution...`);
+    crossCheckFilesWithS3(result.config.folderName);
 
     console.log("\nPlease commit and push this folder to the repository.");
     console.log("\n⚠️ IMPORTANT: For security, entropy values were NOT saved anywhere and should now be gone from memory.");
