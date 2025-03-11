@@ -79,14 +79,14 @@ Select **one** of the following contribution methods:
 #### Option A: Using Pre-built Docker Image
 
 ```bash
-docker run --rm -it -v $(pwd)/contributions:/app/contributions pantherprotocol/trusted-setup-ceremony:latest contribute
+docker run --user $(id -u):$(id -g) --rm -it -v $(pwd)/contributions:/app/contributions pantherprotocol/trusted-setup-ceremony:latest contribute
 ```
 
 #### Option B: Build Docker Image Yourself (Recommended)
 
 ```bash
 docker build -t trusted-setup-ceremony .
-docker run --rm -it -v $(pwd)/contributions:/app/contributions trusted-setup-ceremony contribute
+docker run --user $(id -u):$(id -g) --rm -it -v $(pwd)/contributions:/app/contributions trusted-setup-ceremony contribute
 ```
 
 #### Option C: Using Node.js Directly
@@ -120,7 +120,7 @@ docker run --user $(id -u):$(id -g) --rm -it -v $(pwd)/contributions:/app/contri
 
 ```bash
 docker build -t trusted-setup-ceremony .
-docker run --user $(id -u):$(id -g) --rm -it -v $(pwd)/contributions:/app/contributions verify
+docker run --user $(id -u):$(id -g) --rm -it -v $(pwd)/contributions:/app/contributions trusted-setup-ceremony verify
 ```
 
 #### Option C: Using Node.js Directly
@@ -196,7 +196,7 @@ docker run --user $(id -u):$(id -g) --rm -it -v %cd%/contributions:/app/contribu
 
 **For path-related issues**, use absolute paths:
 ```cmd
-docker run--user $(id -u):$(id -g) --rm -it -v C:\full\path\to\trusted-setup-contributions:/app/contributions pantherprotocol/trusted-setup-ceremony contribute
+docker run --user $(id -u):$(id -g) --rm -it -v C:\full\path\to\trusted-setup-contributions:/app/contributions pantherprotocol/trusted-setup-ceremony contribute
 ```
 
 ## Technical Details
