@@ -3,6 +3,7 @@ node_modules/
 # Ignore large files stored in S3
 **/*.zkey
 **/*.r1cs
+**/*.ptau
 # Keep contributions metadata
 !**/contribution.txt
 !**/attestation.json

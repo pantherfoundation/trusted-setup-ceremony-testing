@@ -106,9 +106,9 @@ During your contribution, you will:
 
 ### 5. Verify Your Contribution
 
-> **Note:** This verification functionality is currently under development.
+After contributing, you should verify that your contribution was processed correctly. The verification tool will automatically download any necessary files that aren't present locally.
 
-After contributing, verify that your contribution was processed correctly:
+Select **one** of the following verification methods:
 
 #### Option A: Using Pre-built Docker Image
 
@@ -129,6 +129,8 @@ docker run --user $(id -u):$(id -g) --rm -it -v $(pwd)/contributions:/app/contri
 npm install
 npm run verify
 ```
+
+For more detailed information about the verification process, see the [Verification Guide](#verification-guide) section below.
 
 ### 6. Submit Your Contribution
 
@@ -199,6 +201,80 @@ docker run --user $(id -u):$(id -g) --rm -it -v %cd%/contributions:/app/contribu
 docker run --user $(id -u):$(id -g) --rm -it -v C:\full\path\to\trusted-setup-contributions:/app/contributions pantherprotocol/trusted-setup-ceremony contribute
 ```
 
+## Verification Guide
+
+This section provides detailed information about the verification process, including automatic file downloads, understanding results, and troubleshooting.
+
+### Automatic File Downloads
+
+When running verification, the following will happen automatically if files are missing:
+
+- **PTAU File**: The Powers of Tau file (powersOfTau28_hez_final_17.ptau) will be downloaded from S3 if not found locally
+- **Initial Setup**: If the initial setup folder (0000_initial) isn't present locally, it will be downloaded
+- **Contribution Folders**:
+  - If you have no contribution folders or only the initial setup folder, **all** contributions will be downloaded from S3
+  - If you already have multiple contribution folders, the verification will use your existing local files
+  - To force a fresh download of all contributions, delete the contributions folder first
+
+### Understanding Verification Results
+
+After the verification completes, a summary table will be displayed showing:
+
+- A table with each circuit and contribution combination
+- The status (PASS/FAIL) for each verified circuit
+- Overall statistics showing total verifications, passed tests, and failed tests
+- Details of any failed verifications for troubleshooting
+
+Example output:
+```
+=== VERIFICATION SUMMARY ===
+
+Contribution           | zAccountRegistration | zAccountRenewal    | zSwap             | zTransaction
+---------------------- | ------------------- | ----------------- | ----------------- | -----------------
+0001_pycckuu           | ✅ PASS             | ✅ PASS           | ✅ PASS           | ✅ PASS
+0002_pycckuu           | ✅ PASS             | ✅ PASS           | ✅ PASS           | ✅ PASS
+0003_pycckuu           | ✅ PASS             | ✅ PASS           | ✅ PASS           | ✅ PASS
+
+=== OVERALL RESULTS ===
+Total verification tests: 12
+Passed: 12
+Failed: 0
+```
+
+#### Troubleshooting Verification
+
+If verification fails, check:
+
+- Network connectivity to download required files
+- S3 credentials if files can't be downloaded
+- Free disk space for downloaded files
+- Whether the initial zkey files match the contribution files being verified
+
+## Platform-Specific Instructions
+
+### Linux and macOS
+
+The commands provided in this guide work natively on Linux and macOS systems.
+
+### Windows
+
+For Windows users, adjust commands as follows:
+
+**PowerShell:**
+```powershell
+docker run--user $(id -u):$(id -g) --rm -it -v ${PWD}/contributions:/app/contributions pantherprotocol/trusted-setup-ceremony contribute
+```
+
+**Command Prompt:**
+```cmd
+docker run --user $(id -u):$(id -g) --rm -it -v %cd%/contributions:/app/contributions pantherprotocol/trusted-setup-ceremony contribute
+```
+
+**For path-related issues**, use absolute paths:
+```cmd
+docker run --user $(id -u):$(id -g) --rm -it -v C:\full\path\to\trusted-setup-contributions:/app/contributions pantherprotocol/trusted-setup-ceremony contribute
+```
+
 ## Technical Details
 
 ### Docker Image Information
@@ -217,12 +293,22 @@ You can specify a version by replacing `:latest` with a version tag (e.g., `:0.1
 - `--rm` - Automatically removes the container after execution
 - The image supports both AMD64 (x86_64) and ARM64 architectures
 
+### Verification Technical Details
+
+The verification process:
+1. Uses snarkjs `zkvi` command to verify each contribution
+2. Compares each contribution against the initial setup using the PTAU file
+3. Requires approximately 8GB RAM for verification
+4. Can take 5-15 minutes to complete depending on hardware
+
 ## Coordinator Instructions
 
 If you are coordinating the ceremony:
 
 1. Initialize the repository by copying the r1cs and zkey files to the `contributions/0000_initial` folder
 2. Push this initial setup to the repository
+3. Regular verification helps ensure the integrity of each contribution
+4. Monitor the verification summary table for any failed verifications
 
 
 

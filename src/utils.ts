@@ -6,12 +6,12 @@ import dotenv from "dotenv";
 // Load environment variables from .env file
 dotenv.config();
 
-export const contributionRootFolder = './contributions';
+export const contributionRootFolder = "./contributions";
 
 // Get S3 configuration from environment variables
-const S3_BUCKET_PATH = process.env.S3BUCKET || 's3://pp-trusted-test';
-export const S3_BUCKET_NAME = S3_BUCKET_PATH.replace('s3://', '');
-export const AWS_REGION = process.env.AWS_DEFAULT_REGION || 'us-east-2';
+const S3_BUCKET_PATH = process.env.S3BUCKET || "s3://pp-trusted-test";
+export const S3_BUCKET_NAME = S3_BUCKET_PATH.replace("s3://", "");
+export const AWS_REGION = process.env.AWS_DEFAULT_REGION || "us-east-2";
 export const AWS_ENDPOINT = process.env.AWS_ENDPOINT_URL || `https://s3.${AWS_REGION}.amazonaws.com`;
 
 // Use environment variables for AWS credentials
@@ -19,7 +19,7 @@ const AWS_ENV_VARS = {
   AWS_ACCESS_KEY_ID: process.env.AWS_ACCESS_KEY_ID,
   AWS_SECRET_ACCESS_KEY: process.env.AWS_SECRET_ACCESS_KEY,
   AWS_DEFAULT_REGION: AWS_REGION,
-  AWS_ENDPOINT_URL: AWS_ENDPOINT
+  AWS_ENDPOINT_URL: AWS_ENDPOINT,
 };
 
 export function getDirectories(source: string): string[] {
@@ -55,7 +55,7 @@ export function getCircuitR1cs(initialFolder: string): string {
 // Check if AWS CLI is available
 function isAwsCliAvailable(): boolean {
   try {
-    execSync('aws --version', { stdio: 'ignore' });
+    execSync("aws --version", { stdio: "ignore" });
     return true;
   } catch (error) {
     return false;
@@ -63,26 +63,26 @@ function isAwsCliAvailable(): boolean {
 }
 
 // Run AWS CLI commands with environment variables
-function runAwsCommand(command: string, stdio: 'inherit' | 'pipe' | 'ignore' = 'inherit'): string {
+function runAwsCommand(command: string, stdio: "inherit" | "pipe" | "ignore" = "inherit"): string {
   if (!isAwsCliAvailable()) {
     console.warn("AWS CLI not available or not compatible with current environment.");
-    if (command.includes('s3 cp') && command.includes('--recursive')) {
+    if (command.includes("s3 cp") && command.includes("--recursive")) {
       throw new Error("AWS CLI not available or not compatible with current environment.");
     }
-    return '';
+    return "";
   }
 
   const envVars = { ...process.env, ...AWS_ENV_VARS };
 
   try {
-    return execSync(command, { env: envVars, stdio, encoding: 'utf8' });
+    return execSync(command, { env: envVars, stdio, encoding: "utf8" });
   } catch (error) {
-    if (stdio === 'ignore') {
-      return '';
+    if (stdio === "ignore") {
+      return "";
     }
     console.warn(`Command failed: ${command}`);
     console.warn("This may be due to architecture compatibility issues in Docker.");
-    return '';
+    return "";
   }
 }
 
@@ -90,9 +90,7 @@ function runAwsCommand(command: string, stdio: 'inherit' | 'pipe' | 'ignore' = '
 export function downloadFromS3(prefix?: string): boolean {
   try {
     const s3Path = prefix ? `${S3_BUCKET_PATH}/${prefix}` : S3_BUCKET_PATH;
-    const localPath = prefix
-      ? path.join(contributionRootFolder, prefix)
-      : contributionRootFolder;
+    const localPath = prefix ? path.join(contributionRootFolder, prefix) : contributionRootFolder;
 
     // Ensure the local directory exists
     fs.ensureDirSync(localPath);
@@ -105,16 +103,16 @@ export function downloadFromS3(prefix?: string): boolean {
     console.log(`Downloading files from ${s3Path} to ${localPath}...`);
     const result = runAwsCommand(`aws s3 cp ${s3Path} ${localPath} --recursive`);
 
-    if (result !== '') {
-      console.log('Download complete!');
+    if (result !== "") {
+      console.log("Download complete!");
       return true;
     } else {
-      console.warn('S3 download was not successful. Proceeding with local files only.');
+      console.warn("S3 download was not successful. Proceeding with local files only.");
       return false;
     }
   } catch (error) {
-    console.error('Error downloading files from S3:', error);
-    console.warn('Proceeding with local files only.');
+    console.error("Error downloading files from S3:", error);
+    console.warn("Proceeding with local files only.");
     return false;
   }
 }
@@ -132,15 +130,15 @@ export function uploadToS3(folderName: string): boolean {
     console.log(`Uploading files from ${localPath} to ${s3Path}...`);
     const result = runAwsCommand(`aws s3 cp ${localPath} ${s3Path} --recursive`);
 
-    if (result !== '') {
-      console.log('Upload complete!');
+    if (result !== "") {
+      console.log("Upload complete!");
       return true;
     } else {
-      console.warn('S3 upload was not successful.');
+      console.warn("S3 upload was not successful.");
       return false;
     }
   } catch (error) {
-    console.error('Error uploading files to S3:', error);
+    console.error("Error uploading files to S3:", error);
     return false;
   }
 }
@@ -154,15 +152,15 @@ export function downloadLatestContribution(): string | null {
     }
 
     // List folders in S3 bucket and get the latest contribution folder
-    const output = runAwsCommand(`aws s3 ls ${S3_BUCKET_PATH}/ | grep -o "[0-9]\\{4\\}_[^/]*/" | sort | tail -1`, 'pipe');
+    const output = runAwsCommand(`aws s3 ls ${S3_BUCKET_PATH}/ | grep -o "[0-9]\\{4\\}_[^/]*/" | sort | tail -1`, "pipe");
 
     if (!output) {
-      console.log('No contribution folders found in S3 bucket or S3 access failed.');
+      console.log("No contribution folders found in S3 bucket or S3 access failed.");
       return null;
     }
 
     // Remove trailing slash
-    const folderName = output.trim().replace(/\/$/, '');
+    const folderName = output.trim().replace(/\/$/, "");
     console.log(`Latest contribution folder in S3: ${folderName}`);
 
     // Check if the folder already exists locally
@@ -200,15 +198,15 @@ export function downloadLatestContribution(): string | null {
 
     return folderName;
   } catch (error) {
-    console.error('Error getting latest contribution from S3:', error);
-    console.warn('Will proceed with local files only.');
+    console.error("Error getting latest contribution from S3:", error);
+    console.warn("Will proceed with local files only.");
     return null;
   }
 }
 
 // Download initial setup if not available locally
 export function ensureInitialSetup(): void {
-  const initialFolder = '0000_initial';
+  const initialFolder = "0000_initial";
   const localPath = path.join(contributionRootFolder, initialFolder);
 
   // Create contributions root directory if it doesn't exist
@@ -261,7 +259,7 @@ export function crossCheckFilesWithS3(folderName: string): boolean {
     console.log(`Cross-checking files between S3 and local for ${folderName}...`);
 
     // Get list of files from S3
-    const s3FilesOutput = runAwsCommand(`aws s3 ls ${S3_BUCKET_PATH}/${folderName}/ --recursive | awk '{print $4}' | sort`, 'pipe');
+    const s3FilesOutput = runAwsCommand(`aws s3 ls ${S3_BUCKET_PATH}/${folderName}/ --recursive | awk '{print $4}' | sort`, "pipe");
 
     if (!s3FilesOutput) {
       console.warn(`No files found in S3 for folder ${folderName}`);
@@ -269,8 +267,10 @@ export function crossCheckFilesWithS3(folderName: string): boolean {
     }
 
     // Parse S3 files (remove the folder prefix from each file)
-    const s3Files = s3FilesOutput.trim().split('\n')
-      .map(file => file.replace(`${folderName}/`, ''))
+    const s3Files = s3FilesOutput
+      .trim()
+      .split("\n")
+      .map((file) => file.replace(`${folderName}/`, ""))
       .filter(Boolean);
 
     // Get local files
@@ -284,7 +284,7 @@ export function crossCheckFilesWithS3(folderName: string): boolean {
       let results: string[] = [];
       const files = fs.readdirSync(dir);
 
-      files.forEach(file => {
+      files.forEach((file) => {
         const fullPath = path.join(dir, file);
         const relativePath = path.relative(baseDir, fullPath);
 
@@ -301,12 +301,12 @@ export function crossCheckFilesWithS3(folderName: string): boolean {
     const localFiles = getFilesRecursively(localPath).sort();
 
     // List of OS-specific files to ignore
-    const ignoreFiles = ['.DS_Store', 'Thumbs.db', '.directory', '._*'];
+    const ignoreFiles = [".DS_Store", "Thumbs.db", ".directory", "._*"];
 
     // Function to check if a file should be ignored
     function shouldIgnoreFile(file: string): boolean {
-      return ignoreFiles.some(pattern => {
-        if (pattern.endsWith('*')) {
+      return ignoreFiles.some((pattern) => {
+        if (pattern.endsWith("*")) {
           return file.startsWith(pattern.slice(0, -1));
         }
         return file === pattern;
@@ -314,19 +314,19 @@ export function crossCheckFilesWithS3(folderName: string): boolean {
     }
 
     // Filter out ignored files from both lists
-    const filteredS3Files = s3Files.filter(file => !shouldIgnoreFile(file));
-    const filteredLocalFiles = localFiles.filter(file => !shouldIgnoreFile(file));
+    const filteredS3Files = s3Files.filter((file) => !shouldIgnoreFile(file));
+    const filteredLocalFiles = localFiles.filter((file) => !shouldIgnoreFile(file));
 
     // Find missing files (ignoring OS-specific files)
-    const missingLocalFiles = filteredS3Files.filter(file => !filteredLocalFiles.includes(file));
-    const missingS3Files = filteredLocalFiles.filter(file => !filteredS3Files.includes(file));
+    const missingLocalFiles = filteredS3Files.filter((file) => !filteredLocalFiles.includes(file));
+    const missingS3Files = filteredLocalFiles.filter((file) => !filteredS3Files.includes(file));
 
     if (missingLocalFiles.length > 0) {
       console.warn(`Missing ${missingLocalFiles.length} files locally that exist in S3 for ${folderName}:`);
-      missingLocalFiles.forEach(file => console.warn(`  - ${file}`));
+      missingLocalFiles.forEach((file) => console.warn(`  - ${file}`));
 
       // Download missing files
-      const shouldDownload = missingLocalFiles.some(file => file.endsWith('.zkey') || file.endsWith('.r1cs'));
+      const shouldDownload = missingLocalFiles.some((file) => file.endsWith(".zkey") || file.endsWith(".r1cs"));
       if (shouldDownload) {
         console.log(`Attempting to download missing files for ${folderName}...`);
 
@@ -362,22 +362,22 @@ export function crossCheckFilesWithS3(folderName: string): boolean {
     }
 
     // Special check for zkey files
-    const s3ZkeyFiles = filteredS3Files.filter(file => file.endsWith('.zkey'));
-    const localZkeyFiles = filteredLocalFiles.filter(file => file.endsWith('.zkey'));
+    const s3ZkeyFiles = filteredS3Files.filter((file) => file.endsWith(".zkey"));
+    const localZkeyFiles = filteredLocalFiles.filter((file) => file.endsWith(".zkey"));
 
     if (s3ZkeyFiles.length > localZkeyFiles.length) {
       console.warn(`Missing ${s3ZkeyFiles.length - localZkeyFiles.length} zkey files locally`);
-    } else if (localZkeyFiles.length === s3ZkeyFiles.length && missingLocalFiles.some(file => file.endsWith('.zkey'))) {
+    } else if (localZkeyFiles.length === s3ZkeyFiles.length && missingLocalFiles.some((file) => file.endsWith(".zkey"))) {
       console.log(`All zkey files are now available locally.`);
     }
 
     // Re-check after download
     if (missingLocalFiles.length > 0) {
       const newLocalFiles = getFilesRecursively(localPath)
-        .filter(file => !shouldIgnoreFile(file))
+        .filter((file) => !shouldIgnoreFile(file))
         .sort();
 
-      const stillMissing = filteredS3Files.filter(file => !newLocalFiles.includes(file));
+      const stillMissing = filteredS3Files.filter((file) => !newLocalFiles.includes(file));
 
       if (stillMissing.length > 0) {
         console.warn(`Still missing ${stillMissing.length} files after download attempt.`);
@@ -390,7 +390,38 @@ export function crossCheckFilesWithS3(folderName: string): boolean {
 
     return missingLocalFiles.length === 0;
   } catch (error) {
-    console.error('Error cross-checking files with S3:', error);
+    console.error("Error cross-checking files with S3:", error);
     return false;
   }
+}
+
+// Function to ensure the PTAU file is available
+export function ensurePtauFile(): string {
+  const ptauFileName = "powersOfTau28_hez_final_18.ptau";
+  const ptauLocalPath = path.join(process.cwd(), ptauFileName);
+
+  // Check if PTAU file exists locally
+  if (!fs.existsSync(ptauLocalPath)) {
+    console.log(`PTAU file not found locally. Downloading from S3...`);
+    try {
+      // Use runAwsCommand for consistency
+      runAwsCommand(`aws s3 cp ${S3_BUCKET_PATH}/${ptauFileName} ${ptauLocalPath}`);
+      console.log(`✅ PTAU file downloaded successfully!`);
+    } catch (error) {
+      console.error(`❌ Failed to download PTAU file`);
+      if (error instanceof Error) {
+        console.error(error.message);
+      }
+      throw new Error("Failed to download required PTAU file");
+    }
+  } else {
+    console.log(`Using existing PTAU file at ${ptauLocalPath}`);
+  }
+
+  return ptauLocalPath;
+}
+
+// Add function to get the r1cs folder path
+export function getR1csFolderPath(): string {
+  return path.join(process.cwd(), "r1cs");
 }
