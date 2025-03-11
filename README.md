@@ -14,8 +14,6 @@ The ceremony is sequential - each participant builds upon the previous contribut
 
 ## Prerequisites
 
-## Prerequisites
-
 Contributors have multiple options to participate in the Ceremony, each with different prerequisites:
 
 - **Option A & B: Running Inside a Docker Container**  
@@ -36,24 +34,6 @@ Regardless of the chosen option, ensure you have:
 |------------------------|-----------------------------------------------------------------------------------------------------|
 | **A & B (Docker)**     | [Docker](https://docs.docker.com/get-docker/), [Git](https://git-scm.com/downloads)                 |
 | **C (Without Docker)** | [Node.js](https://nodejs.org/en/download), [AWS CLI](https://aws.amazon.com/cli/), [Git](https://git-scm.com/downloads) |
-
-### Setting Up S3 Access
-
-
-1. Copy the `.env.example` file to `.env`:
-   ```bash
-   cp .env.example .env
-   ```
-
-2. Edit the `.env` file and fill in your AWS credentials:
-   ```
-   AWS_ACCESS_KEY_ID=your_access_key_here
-   AWS_SECRET_ACCESS_KEY=your_secret_key_here
-   AWS_DEFAULT_REGION="us-east-2"
-   AWS_ENDPOINT_URL="https://s3.us-east-2.amazonaws.com"
-   S3BUCKET="s3://pp-trusted-test"
-   ```
-
 
 ## Security Best Practices
 
@@ -77,16 +57,25 @@ While following these recommendations provides maximum security, any contributio
    cd trusted-setup-ceremony
    ```
 
-### 2. Set Up Environment Variables (Optional)
+### 2. Set Up Environment Variables
 
-You can customize the S3 bucket used for file storage by setting environment variables:
+1. **Create the `.env` File**  
+   Copy the provided `.env.example` file to create a new `.env` file:
+   ```bash
+   cp .env.example .env
+   ```
 
-```bash
-export S3_BUCKET_NAME=your-custom-bucket-name
-export S3_REGION=your-aws-region
-```
+2. **Edit the `.env` File**  
+   Open the newly created `.env` file in your preferred text editor (e.g., `nano`, `vim`, or a GUI-based editor) and customize the values, especially by filling in your AWS credentials. For example:
+   ```bash
+   nano .env
+   ```
 
-By default, the ceremony uses the bucket `trusted-setup-files` in the `us-east-1` region.
+3. **Customize S3 Configuration**  
+   Update the file with your AWS access details (e.g., `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, `AWS_DEFAULT_REGION`, `S3BUCKET`).
+
+4. **Default Configuration**  
+   If you do not modify the S3 bucket information, the ceremony will use the default bucket `trusted-setup-files`, located in the `us-east-1` region.
 
 ### 3. Contribute to the Ceremony
 
@@ -109,6 +98,7 @@ docker run --user $(id -u):$(id -g) --rm -it -v $(pwd)/contributions:/app/contri
 
 ```bash
 npm install
+source .env
 npm run contribute
 ```
 
