@@ -84,7 +84,7 @@ Select **one** of the following contribution methods:
 #### Option A: Using Pre-built Docker Image
 
 ```bash
-docker run --user $(id -u):$(id -g) --rm -it -v --env-file .env
+docker run --user $(id -u):$(id -g) --rm -it --env-file .env -v
  $(pwd)/contributions:/app/contributions pantherprotocol/trusted-setup-ceremony:latest contribute
 ```
 
@@ -92,7 +92,7 @@ docker run --user $(id -u):$(id -g) --rm -it -v --env-file .env
 
 ```bash
 docker build -t trusted-setup-ceremony .
-docker run --user $(id -u):$(id -g) --rm -it -v $(pwd)/contributions:/app/contributions trusted-setup-ceremony contribute
+docker run --user $(id -u):$(id -g) --rm -it --env-file .env -v $(pwd)/contributions:/app/contributions trusted-setup-ceremony contribute
 ```
 
 #### Option C: Using Node.js Directly
@@ -120,19 +120,21 @@ Select **one** of the following verification methods:
 #### Option A: Using Pre-built Docker Image
 
 ```bash
-docker run --user $(id -u):$(id -g) --rm -it -v $(pwd)/contributions:/app/contributions pantherprotocol/trusted-setup-ceremony:latest verify
+docker run --user $(id -u):$(id -g) --rm -it --env-file .env -v $(pwd)/contributions:/app/contributions pantherprotocol/trusted-setup-ceremony:latest verify
 ```
 
 #### Option B: Build Docker Image Yourself (Recommended)
 
 ```bash
+# Skip the command on the next line if you have executed it in the previous step
 docker build -t trusted-setup-ceremony .
-docker run --user $(id -u):$(id -g) --rm -it -v $(pwd)/contributions:/app/contributions trusted-setup-ceremony verify
+docker run --user $(id -u):$(id -g) --rm -it --env-file .env -v $(pwd)/contributions:/app/contributions trusted-setup-ceremony verify
 ```
 
 #### Option C: Using Node.js Directly
 
 ```bash
+# Skip the command on the next line if you have executed it in the previous step
 npm install
 npm run verify
 ```
@@ -195,17 +197,17 @@ For Windows users, adjust commands as follows:
 
 **PowerShell:**
 ```powershell
-docker run--user $(id -u):$(id -g) --rm -it -v ${PWD}/contributions:/app/contributions pantherprotocol/trusted-setup-ceremony contribute
+docker run--user $(id -u):$(id -g) --rm -it --env-file .env -v ${PWD}/contributions:/app/contributions pantherprotocol/trusted-setup-ceremony contribute
 ```
 
 **Command Prompt:**
 ```cmd
-docker run --user $(id -u):$(id -g) --rm -it -v %cd%/contributions:/app/contributions pantherprotocol/trusted-setup-ceremony contribute
+docker run --user $(id -u):$(id -g) --rm -it --env-file .env -v %cd%/contributions:/app/contributions pantherprotocol/trusted-setup-ceremony contribute
 ```
 
 **For path-related issues**, use absolute paths:
 ```cmd
-docker run --user $(id -u):$(id -g) --rm -it -v C:\full\path\to\trusted-setup-contributions:/app/contributions pantherprotocol/trusted-setup-ceremony contribute
+docker run --user $(id -u):$(id -g) --rm -it --env-file .env -v C:\full\path\to\trusted-setup-contributions:/app/contributions pantherprotocol/trusted-setup-ceremony contribute
 ```
 
 ## Verification Guide
@@ -269,17 +271,17 @@ For Windows users, adjust commands as follows:
 
 **PowerShell:**
 ```powershell
-docker run--user $(id -u):$(id -g) --rm -it -v ${PWD}/contributions:/app/contributions pantherprotocol/trusted-setup-ceremony contribute
+docker run--user $(id -u):$(id -g) --rm -it --env-file .env -v ${PWD}/contributions:/app/contributions pantherprotocol/trusted-setup-ceremony contribute
 ```
 
 **Command Prompt:**
 ```cmd
-docker run --user $(id -u):$(id -g) --rm -it -v %cd%/contributions:/app/contributions pantherprotocol/trusted-setup-ceremony contribute
+docker run --user $(id -u):$(id -g) --rm -it --env-file .env -v %cd%/contributions:/app/contributions pantherprotocol/trusted-setup-ceremony contribute
 ```
 
 **For path-related issues**, use absolute paths:
 ```cmd
-docker run --user $(id -u):$(id -g) --rm -it -v C:\full\path\to\trusted-setup-contributions:/app/contributions pantherprotocol/trusted-setup-ceremony contribute
+docker run --user $(id -u):$(id -g) --rm -it --env-file .env -v C:\full\path\to\trusted-setup-contributions:/app/contributions pantherprotocol/trusted-setup-ceremony contribute
 ```
 
 ## Technical Details
@@ -298,6 +300,7 @@ You can specify a version by replacing `:latest` with a version tag (e.g., `:0.1
 - `-v $(pwd)/contributions:/app/contributions` - Mounts your local contributions directory to the container
 - `-it` - Enables interactive mode required for entropy input
 - `--rm` - Automatically removes the container after execution
+- `--env-file .env` - Makes environment variables from the `.env` file available inside the container
 - The image supports both AMD64 (x86_64) and ARM64 architectures
 
 ### Verification Technical Details
@@ -316,6 +319,3 @@ If you are coordinating the ceremony:
 2. Push this initial setup to the repository
 3. Regular verification helps ensure the integrity of each contribution
 4. Monitor the verification summary table for any failed verifications
-
-
-
