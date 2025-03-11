@@ -2,11 +2,11 @@
 
 ## Overview
 
-This repository manages a trusted setup ceremony for a zero-knowledge circuit. Each participant contributes randomness to ensure that no single person knows the "toxic waste" that could compromise the system's security.
+This repository facilitates the trusted setup ceremony for a zero-knowledge circuit. Each participant contributes randomness to the process, ensuring no single entity possesses the complete "toxic waste" that could potentially compromise the system's security.
 
 The ceremony is sequential - each participant builds upon the previous contribution. This approach ensures the security of the final parameters as long as at least one participant is honest.
 
-## Time Requirements
+## Time Commitment
 
 - **Preparation time**: ~5-15 minutes to set up your environment
 - **Contribution time**: ~5-10 minutes of uninterrupted time when it's your turn
@@ -14,38 +14,40 @@ The ceremony is sequential - each participant builds upon the previous contribut
 
 ## Prerequisites
 
-- [Docker](https://docs.docker.com/get-docker/) installed on your system
-- [Git](https://git-scm.com/downloads) for cloning the repository
-- [Git LFS](https://git-lfs.github.com/) (Large File Storage) for handling large files
-- Familiarity with running commands from the command line
+Before participating, ensure you have:
 
-### Installing Git LFS
+- [Docker](https://docs.docker.com/get-docker/) - For running the contribution environment
+- [Git](https://git-scm.com/downloads) - For repository management
+- [Git LFS](https://git-lfs.github.com/) - For handling large files
+- Basic familiarity with command-line operations
 
-1. Download and install Git LFS from [git-lfs.github.com](https://git-lfs.github.com/)
-2. Set up Git LFS for your user account:
+### Setting Up Git LFS
+
+1. Install Git LFS from [git-lfs.github.com](https://git-lfs.github.com/)
+2. Configure Git LFS for your account:
    ```bash
    git lfs install
    ```
 
-This repository uses Git LFS to manage large files generated during the ceremony. Without Git LFS, you won't be able to properly clone or contribute to the repository.
+> **Important:** This repository uses Git LFS to manage large files generated during the ceremony. Without Git LFS properly configured, you won't be able to clone or contribute to the repository correctly.
 
-## Security Recommendations
+## Security Best Practices
 
 For maximum security of the ceremony, we recommend:
 
 - Use a freshly installed operating system
 - Disconnect from the internet after downloading the necessary files
-- Use a computer with a hardware random number generator
-- Securely delete or physically destroy storage media after participating
+- Utilize a computer with a hardware random number generator
+- Securely wipe or physically destroy storage media after participating
 
-However, any contribution is valuable and appreciated, even if it doesn't follow all these recommendations.
+While following these recommendations provides maximum security, any contribution remains valuable even if all security measures cannot be implemented.
 
-## Participation Process
+## Participation Guide
 
 ### 1. Fork and Clone the Repository
 
 1. Fork this repository to your GitHub account
-2. Clone your forked repository:
+2. Clone your fork:
    ```bash
    git clone https://github.com/<Your-GitHub-Username>/trusted-setup-ceremony.git
    cd trusted-setup-ceremony
@@ -53,7 +55,7 @@ However, any contribution is valuable and appreciated, even if it doesn't follow
 
 ### 2. Contribute to the Ceremony
 
-Choose **one** of the following methods to contribute:
+Select **one** of the following contribution methods:
 
 #### Option A: Using Pre-built Docker Image
 
@@ -75,14 +77,16 @@ npm install
 npm run contribute
 ```
 
-### 3. Follow the Interactive Prompts
+### 3. Interactive Contribution Process
 
-During the contribution process, you will be asked to:
-- Enter your GitHub username
-- Provide random entropy (by typing randomly on your keyboard)
-- Wait for the process to complete, which will create a new folder with your contribution and attestation
+During your contribution, you will:
+- Provide your GitHub username for attribution
+- Generate entropy by typing randomly on your keyboard
+- Wait for the process to complete, which creates a new folder containing your contribution and attestation
 
-### 4. Verify Your Contribution (THIS STEP IS NOT WORKING YET)
+### 4. Verify Your Contribution
+
+> **Note:** This verification functionality is currently under development.
 
 After contributing, verify that your contribution was processed correctly:
 
@@ -116,35 +120,35 @@ git commit -m "Add contribution from YOUR_GITHUB_USERNAME"
 git push origin main
 ```
 
-Then create a pull request to merge your contribution back to the main repository.
+Then create a pull request to merge your contribution into the main repository.
 
 ## Troubleshooting
 
-### Network Connectivity Issues
+### Network Issues
 
-If you encounter issues with the contribution process:
+If you encounter connectivity problems:
 
-1. Ensure your firewall allows the required connections
-2. If using a NAT router, consider enabling UPnP or setting up port forwarding
-3. Try the alternative contribution methods listed in section 2
+1. Verify your firewall settings allow the required connections
+2. For NAT router users, enable UPnP or configure port forwarding
+3. Try an alternative contribution method from Section 2
 
-### Contingency Plans for File Sharing
+### Alternative File Sharing Methods
 
-If the standard contribution method fails, you can try:
+If standard contribution methods fail, consider:
 
-1. Submitting a PR with your contribution files
-2. Uploading files to cloud storage (Google Drive, Dropbox) and sharing the link
-3. Using a secure file transfer tool like [Magic-Wormhole](https://magic-wormhole.readthedocs.io/)
+1. Submitting a pull request with your contribution files
+2. Sharing files via secure cloud storage (Google Drive, Dropbox)
+3. Using [Magic-Wormhole](https://magic-wormhole.readthedocs.io/) for secure file transfer
 
 ## Platform-Specific Instructions
 
 ### Linux and macOS
 
-The commands shown above work as-is on Linux and macOS systems.
+The commands provided in this guide work natively on Linux and macOS systems.
 
 ### Windows
 
-On Windows, use one of these command formats:
+For Windows users, adjust commands as follows:
 
 **PowerShell:**
 ```powershell
@@ -156,9 +160,9 @@ docker run --rm -it -v ${PWD}/contributions:/app/contributions pantherprotocol/t
 docker run --rm -it -v %cd%/contributions:/app/contributions pantherprotocol/trusted-setup-ceremony contribute
 ```
 
-**If you encounter path issues**, use absolute paths:
+**For path-related issues**, use absolute paths:
 ```cmd
-docker run --rm -it -v C:\full\path\to\trusted-setup-contrubutions:/app/contributions pantherprotocol/trusted-setup-ceremony contribute
+docker run --rm -it -v C:\full\path\to\trusted-setup-contributions:/app/contributions pantherprotocol/trusted-setup-ceremony contribute
 ```
 
 ## Technical Details
@@ -171,20 +175,20 @@ The official ceremony Docker image is available on Docker Hub:
 docker pull pantherprotocol/trusted-setup-ceremony:latest
 ```
 
-You can use a specific version by replacing `:latest` with a version tag like `:0.1`.
+You can specify a version by replacing `:latest` with a version tag (e.g., `:0.1`).
 
-### Understanding Docker Commands
+### Docker Command Parameters Explained
 
-- `-v $(pwd)/contributions:/app/contributions` mounts the `contributions` folder in your current directory to the container
-- `-it` enables interactive input required for the contribution
-- `--rm` removes the container after execution
-- The Docker image supports both AMD64 (x86_64) and ARM64 architectures
+- `-v $(pwd)/contributions:/app/contributions` - Mounts your local contributions directory to the container
+- `-it` - Enables interactive mode required for entropy input
+- `--rm` - Automatically removes the container after execution
+- The image supports both AMD64 (x86_64) and ARM64 architectures
 
-## For Coordinators Only
+## Coordinator Instructions
 
 If you are coordinating the ceremony:
 
-1. Initialize the repository by copying r1cs and zkey files to the `0000_initial` folder
+1. Initialize the repository by copying the r1cs and zkey files to the `contributions/0000_initial` folder
 2. Push this initial setup to the repository
 
 
