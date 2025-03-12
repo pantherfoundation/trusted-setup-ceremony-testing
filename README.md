@@ -83,25 +83,145 @@ Select **one** of the following contribution methods:
 
 #### Option A: Using Pre-built Docker Image
 
+<details>
+  <summary>Linux/Mac</summary>
+  <p>
+  
+   ```bash
+   docker run --user $(id -u):$(id -g) --rm -it --env-file .env -v $(pwd)/contributions:/app/contributions pantherprotocol/trusted-setup-ceremony:latest contribute
+   ```
+
+  </p>
+</details>
+
+<details>
+   <summary>Windows Command Prompt</summary>
+
 ```bash
-docker run --user $(id -u):$(id -g) --rm -it --env-file .env -v
- $(pwd)/contributions:/app/contributions pantherprotocol/trusted-setup-ceremony:latest contribute
+docker run --rm -it --env-file .env -v %cd%/contributions:/app/contributions pantherprotocol/trusted-setup-ceremony:latest contribute
 ```
+
+</details>
+
+<details>
+   <summary> Windows PowerShell </summary>
+
+```bash
+docker run --rm -it --env-file .env -v ${pwd}/contributions:/app/contributions pantherprotocol/trusted-setup-ceremony:latest contribute
+```
+
+</details>
+
+
 
 #### Option B: Build Docker Image Yourself (Recommended)
 
-```bash
-docker build -t trusted-setup-ceremony .
-docker run --user $(id -u):$(id -g) --rm -it --env-file .env -v $(pwd)/contributions:/app/contributions trusted-setup-ceremony contribute
-```
+<details>
+  <summary>Linux/Mac</summary>
+  <p>
+  
+   ```bash
+   docker build -t trusted-setup-ceremony .
+   ```
+
+   ```bash
+   docker run --user $(id -u):$(id -g) --rm -it --env-file .env -v $(pwd)/contributions:/app/contributions trusted-setup-ceremony contribute
+   ```
+
+  </p>
+</details>
+
+<details>
+  <summary>Windows</summary>
+  <p>
+  
+   Build docker image
+   ```bash
+   docker build -t trusted-setup-ceremony .
+   ```
+   
+   <details>
+      <summary>Command Prompt</summary>
+
+   ```bash
+   docker run --rm -it --env-file .env -v ${pwd}/contributions:/app/contributions trusted-setup-ceremony contribute
+   ```
+
+   </details>
+
+   <details>
+      <summary> PowerShell </summary>
+
+   ```bash
+   docker run --rm -it --env-file .env -v %cd%/contributions:/app/contributions trusted-setup-ceremony contribute
+   ```
+
+   </details>
+
+
+  </p>
+</details>
+
 
 #### Option C: Using Node.js Directly
 
-```bash
-npm install
-source .env
-npm run contribute
-```
+<details>
+  <summary>Mac/Linux</summary>
+  <p>
+  
+   Install dependencies
+   ```bash
+   npm install
+   ```
+
+   Load environmental variables.
+   ```bash
+   source .env
+   ```
+
+   Run the contribute script. 
+   ```bash
+   npm run contribute
+   ```
+
+  </p>
+</details>
+
+<details>
+  <summary>Windows</summary>
+  <p>
+  
+   Install dependencies
+   ```bash
+   npm install
+   ```
+
+   Copy the provided `.env.bat.example` file to create a new `.env.bat` file:
+   ```bash
+   copy .env.bat.example .env.bat
+   ```
+
+   Open the newly created `.env.bat` file in your preferred text editor (e.g., `nano`, `vim`, or a GUI-based editor) and customize the values, especially by filling in your AWS credentials. For example:
+   ```bash
+   nano .env.bat
+   ```
+
+   Load environmental variables.
+   ```bash
+   call .env.bat
+   ```
+
+
+   Run the contribute script. 
+   ```bash
+   npm run contribute
+   ```
+
+  </p>
+</details>
+
+
+
 
 ### 4. Interactive Contribution Process
 
@@ -119,17 +239,68 @@ Select **one** of the following verification methods:
 
 #### Option A: Using Pre-built Docker Image
 
+<details>
+   <summary>Linux/Mac</summary>
+
 ```bash
 docker run --user $(id -u):$(id -g) --rm -it --env-file .env -v $(pwd)/contributions:/app/contributions pantherprotocol/trusted-setup-ceremony:latest verify
 ```
+</details>
+
+<details>
+   <summary>Windows Command Prompt</summary>
+
+```bash
+docker run --rm -it --env-file .env -v %cd%/contributions:/app/contributions pantherprotocol/trusted-setup-ceremony:latest verify
+```
+
+</details>
+
+<details>
+   <summary>Windows PowerShell</summary>
+
+```bash
+docker run --rm -it --env-file .env -v ${pwd}/contributions:/app/contributions pantherprotocol/trusted-setup-ceremony:latest verify
+```
+
+</details>
+
 
 #### Option B: Build Docker Image Yourself (Recommended)
+
+<details> 
+   <summary>Linux/Mac</summary>
 
 ```bash
 # Skip the command on the next line if you have executed it in the previous step
 docker build -t trusted-setup-ceremony .
 docker run --user $(id -u):$(id -g) --rm -it --env-file .env -v $(pwd)/contributions:/app/contributions trusted-setup-ceremony verify
 ```
+
+</details>
+
+<details> 
+   <summary>Windows Command Prompt</summary>
+
+```bash
+# Skip the command on the next line if you have executed it in the previous step
+docker build -t trusted-setup-ceremony .
+docker run --rm -it --env-file .env -v %cd%/contributions:/app/contributions trusted-setup-ceremony verify
+```
+
+</details>
+
+<details> 
+   <summary>Windows PowerShell</summary>
+
+```bash
+# Skip the command on the next line if you have executed it in the previous step
+docker build -t trusted-setup-ceremony .
+docker run --rm -it --env-file .env -v ${pwd}/contributions:/app/contributions trusted-setup-ceremony verify
+```
+
+</details>
+
 
 #### Option C: Using Node.js Directly
 
@@ -185,31 +356,6 @@ If standard contribution methods fail, consider:
 2. Sharing files via secure cloud storage (Google Drive, Dropbox)
 3. Using [Magic-Wormhole](https://magic-wormhole.readthedocs.io/) for secure file transfer
 
-## Platform-Specific Instructions
-
-### Linux and macOS
-
-The commands provided in this guide work natively on Linux and macOS systems.
-
-### Windows
-
-For Windows users, adjust commands as follows:
-
-**PowerShell:**
-```powershell
-docker run--user $(id -u):$(id -g) --rm -it --env-file .env -v ${PWD}/contributions:/app/contributions pantherprotocol/trusted-setup-ceremony contribute
-```
-
-**Command Prompt:**
-```cmd
-docker run --user $(id -u):$(id -g) --rm -it --env-file .env -v %cd%/contributions:/app/contributions pantherprotocol/trusted-setup-ceremony contribute
-```
-
-**For path-related issues**, use absolute paths:
-```cmd
-docker run --user $(id -u):$(id -g) --rm -it --env-file .env -v C:\full\path\to\trusted-setup-contributions:/app/contributions pantherprotocol/trusted-setup-ceremony contribute
-```
-
 ## Verification Guide
 
 This section provides detailed information about the verification process, including automatic file downloads, understanding results, and troubleshooting.
@@ -258,31 +404,6 @@ If verification fails, check:
 - S3 credentials if files can't be downloaded
 - Free disk space for downloaded files
 - Whether the initial zkey files match the contribution files being verified
-
-## Platform-Specific Instructions
-
-### Linux and macOS
-
-The commands provided in this guide work natively on Linux and macOS systems.
-
-### Windows
-
-For Windows users, adjust commands as follows:
-
-**PowerShell:**
-```powershell
-docker run--user $(id -u):$(id -g) --rm -it --env-file .env -v ${PWD}/contributions:/app/contributions pantherprotocol/trusted-setup-ceremony contribute
-```
-
-**Command Prompt:**
-```cmd
-docker run --user $(id -u):$(id -g) --rm -it --env-file .env -v %cd%/contributions:/app/contributions pantherprotocol/trusted-setup-ceremony contribute
-```
-
-**For path-related issues**, use absolute paths:
-```cmd
-docker run --user $(id -u):$(id -g) --rm -it --env-file .env -v C:\full\path\to\trusted-setup-contributions:/app/contributions pantherprotocol/trusted-setup-ceremony contribute
-```
 
 ## Technical Details
 
