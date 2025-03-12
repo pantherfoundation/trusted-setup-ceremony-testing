@@ -1,0 +1,31 @@
+{
+  "contributor": "neuodev",
+  "contributionNumber": "0008",
+  "timestamp": "2025-03-12T03:27:31.284Z",
+  "files": [
+    {
+      "filename": "prpConverter.zkey",
+      "hash": "f9367d96ffae57e027107f0cb37c7cf6a0b129e4f2c7b66b03c8e3806e31f98c"
+    },
+    {
+      "filename": "treeBatchUpdaterAndRootChecker.zkey",
+      "hash": "05aed1f2fc449a4341c6e660faef7d5484c5176ae39fda6aeda6de50d74008fc"
+    },
+    {
+      "filename": "zAccountRegistration.zkey",
+      "hash": "537efbd646cb60fb8a6feeb8846fe0849e55ce984a94fe1477c2c3e7ab12b727"
+    },
+    {
+      "filename": "zAccountRenewal.zkey",
+      "hash": "046c7fde00c4fef7cc720a38d13d58f917c1d163e9b8b34964d5a9dcdb41c7c6"
+    },
+    {
+      "filename": "zSwap.zkey",
+      "hash": "e602b2e39c35a600a37ad8b786a737eea97d6e09fc41f868e18217f7f3f8fae6"
+    },
+    {
+      "filename": "zTransaction.zkey",
+      "hash": "b62b765403ad3c044006e1a70edcfec4adfa65a6a1c68af96ea5e949b0d9d241"
+    }
+  ]
+}
